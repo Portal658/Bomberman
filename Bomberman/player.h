@@ -31,10 +31,10 @@ public:
 	void set_texture();
 	void set_coord();
 	void set_direction(Direction direction);
-	void move();
-	void move_up();
-	void move_down();
-	void move_left();
-	void move_right();
+	void move(float time);
+	void move_up(float time);
+	void move_down(float time);
+	void move_left(float time);
+	void move_right(float time);
 	void draw();
 };

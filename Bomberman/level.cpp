@@ -112,6 +112,12 @@ Blocks Level::getblock_from_levelcoord(Vector2i levelcoord)
 	return level[levelcoord.x][levelcoord.y].block;
 }
 
+Blocks Level::getblock_from_coord(Vector2f coord)
+{
+	Vector2i levelcoord = getlevelcoord_from_coord(coord);
+	return level[levelcoord.x][levelcoord.y].block;
+}
+
 Blocks Level::getblock_before_player(Vector2i player_coord, Direction direction)
 {
 	switch (direction)

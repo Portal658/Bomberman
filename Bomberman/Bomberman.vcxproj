@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
+    <ClInclude Include="configuration.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="object.h" />

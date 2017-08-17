@@ -9,9 +9,10 @@ Player::Player(RenderWindow &window, Textures &textures, Level &level, PlayerCol
 	this->direction = dir_down;
 	this->bomb_count = 1;
 	this->bomb_strength = 3;
-	this->speed = 10.f;
+	this->speed = 0.2f;
 	set_texture();
 	set_coord();
+	sprite.setPosition(coord);
 }
 
 Vector2f Player::get_size()
@@ -120,18 +121,26 @@ void Player::set_direction(Direction direction)
 	this->direction = direction;
 }
 
-void Player::move()
+void Player::move(float time)
 {
 	switch (color)
 	{
 	case white:
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			if (direction != dir_right)
+			{
+				set_direction(dir_right);
+			}
+			move_right(time);
+		}
 		if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			if (direction != dir_down)
 			{
 				set_direction(dir_down);
 			}
-			move_down();
+			move_down(time);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Up))
 		{
@@ -139,15 +148,7 @@ void Player::move()
 			{
 				set_direction(dir_up);
 			}
-			move_up();
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Right))
-		{
-			if (direction != dir_right)
-			{
-				set_direction(dir_right);
-			}
-			move_right();
+			move_up(time);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
@@ -155,7 +156,7 @@ void Player::move()
 			{
 				set_direction(dir_left);
 			}
-			move_left();
+			move_left(time);
 		}
 		break;
 	case black:
@@ -167,51 +168,52 @@ void Player::move()
 	}
 }
 
-void Player::move_up()
+void Player::move_up(float time)
 {
-	if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x, coord.y + 0x11 - speed))) == block_null)
+	Vector2f block_size = Block::get_size(block_0);
+	Vector2f player_size = get_size();
+	float _speed = speed * time;
+	if (level->getblock_from_coord(Vector2f(coord.x, coord.y + 17 - _speed)) == block_null)
 	{
-		if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x + get_size().x, coord.y + 0x11 - speed))) == block_null)
-		{
-			coord.y -= speed;
-			levelcoord = level->getlevelcoord_from_coord(coord);
-		}
+		coord.y -= _speed;
+		levelcoord = level->getlevelcoord_from_coord(coord);
 	}
 }
 
-void Player::move_down()
+void Player::move_down(float time)
 {
-	if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x, coord.y + speed + 0x11 + Block::get_size(block_0).y))) == block_null)
+
+	Vector2f block_size = Block::get_size(block_0);
+	Vector2f player_size = get_size();
+	float _speed = speed * time;
+	if (level->getblock_from_coord(Vector2f(coord.x, coord.y + player_size.y + _speed)) == block_null)
 	{
-		if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x + get_size().x, coord.y + speed + 0x11 + Block::get_size(block_0).y))) == block_null)
-		{
-			coord.y += speed;
-			levelcoord = level->getlevelcoord_from_coord(coord);
-		}
+		coord.y += speed * time;
+		levelcoord = level->getlevelcoord_from_coord(coord);
 	}
 }
 
-void Player::move_left()
+void Player::move_left(float time)
 {
-	if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x - speed, coord.y + 0x11))) == block_null)
+	Vector2f block_size = Block::get_size(block_0);
+	Vector2f player_size = get_size();
+	float _speed = speed * time;
+	if (level->getblock_from_coord(Vector2f(coord.x - _speed, coord.y + 17)) == block_null)
 	{
-		if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x - speed, coord.y + 0x11 + get_size().y - 20))) == block_null)
-		{
-			coord.x -= speed;
-			levelcoord = level->getlevelcoord_from_coord(coord);
-		}
+		coord.x -= _speed;
+		levelcoord = level->getlevelcoord_from_coord(coord);
 	}
 }
 
-void Player::move_right()
+void Player::move_right(float time)
 {
-	if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x + Block::get_size(block_0).x, coord.y + 0x11))) == block_null)
+	Vector2f block_size = Block::get_size(block_0);
+	Vector2f player_size = get_size();
+	float _speed = speed * time;
+	if (level->getblock_from_coord(Vector2f(coord.x + block_size.x + _speed, coord.y + 17)) == block_null)
 	{
-		if (level->getblock_from_levelcoord(level->getlevelcoord_from_coord(Vector2f(coord.x + Block::get_size(block_0).x, coord.y + 0x11 + get_size().y - 20))) == block_null)
-		{
-			coord.x += speed;
-			levelcoord = level->getlevelcoord_from_coord(coord);
-		}
+		coord.x += _speed;
+		levelcoord = level->getlevelcoord_from_coord(coord);
 	}
 }
 

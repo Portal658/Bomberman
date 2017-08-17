@@ -11,10 +11,14 @@ Game::Game()
 
 void Game::start()
 {
-	//window->setFramerateLimit(60);
+	window->setFramerateLimit(60);
+	Clock clock;
 	while (window->isOpen())
 	{
-		Sleep(15);
+		//Sleep(15);
+		float game_time = clock.getElapsedTime().asMicroseconds();
+		clock.restart();
+		game_time /= 800;
 		Event event;
 		while (window->pollEvent(event))
 		{
@@ -22,12 +26,12 @@ void Game::start()
 			{
 				window->close();
 			}
-			window->clear(Color(0, 98, 0));
-			level->draw();
-			player_white->draw();
-			player_white->move();
-			player_black->draw();
-			window->display();
 		}
+		window->clear(Color(0, 98, 0));
+		level->draw();
+		player_white->draw();
+		player_white->move(game_time);
+		player_black->draw();
+		window->display();
 	}
 }

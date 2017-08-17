@@ -36,5 +36,6 @@ public:
 	Vector2f getcoord_from_levelcoord(Vector2i levelcoord);
 	Vector2i getlevelcoord_from_coord(Vector2f coord);
 	Blocks getblock_from_levelcoord(Vector2i levelcoord);
+	Blocks getblock_from_coord(Vector2f coord);
 	Blocks getblock_before_player(Vector2i player_coord, Direction direction);
 };
